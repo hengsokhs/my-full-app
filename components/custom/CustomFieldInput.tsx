@@ -5,14 +5,25 @@ interface CustomFieldInputProps {
     label: string;
     name: string;
     id: string;
-    type: string;
-    className: React.ReactNode;
+    type?: string;
+    className?: React.ReactNode;
     value: string
-    onChange: React.ReactNode;
-    placeholder: string
+    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    placeholder?: string
+    required?: boolean
 }
 
-export function CustomFieldInput({label, name, id, type='text', className, value, onChange, placeholder}: CustomFieldInputProps) {
+export function CustomFieldInput({
+        label
+        , name
+        , id
+        , type='text'
+        , className
+        , value
+        , onChange
+        , placeholder
+        , required=false
+    }: CustomFieldInputProps) {
     return(
         <Field className='my-3'>
             <FieldLabel htmlFor={id}>{label}</FieldLabel>
@@ -22,6 +33,9 @@ export function CustomFieldInput({label, name, id, type='text', className, value
                 id={id}
                 value={value}
                 onChange={onChange}
+                placeholder={placeholder}
+                className={`${className}`}
+                required={required}
             />
         </Field>
     );

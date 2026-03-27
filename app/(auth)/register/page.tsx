@@ -10,6 +10,7 @@ import {
     CardHeader,
     CardContent
 } from "@/components/ui/card";
+import { redirect } from 'next/navigation';
 
 export default function RegisterPage() {
     const [firstName, setFirstName] = useState("");
@@ -21,6 +22,10 @@ export default function RegisterPage() {
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
         console.log({firstName, lastName, email, password, confirmPassword});
+    }
+
+    const handleBackToLogin = () => {
+        redirect("/login");
     }
 
     return (
@@ -44,6 +49,7 @@ export default function RegisterPage() {
                         confirmPassword={confirmPassword}
                         setConfirmPassword={setConfirmPassword}
                         onSubmit={handleSubmit}
+                        onBackToLogin={handleBackToLogin}
                     />
                 </CardContent>
             </Card>
@@ -63,9 +69,10 @@ interface RegisterFormProps {
     confirmPassword: string;
     setConfirmPassword: (val: string) => void;
     onSubmit: (e: FormEvent) => void;
+    onBackToLogin: () => void;
 }
 
-function RegisterInputForm({ firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, onSubmit }: RegisterFormProps) {
+function RegisterInputForm({ firstName, setFirstName, lastName, setLastName, email, setEmail, password, setPassword, confirmPassword, setConfirmPassword, onSubmit, onBackToLogin }: RegisterFormProps) {
     return (
         <form onSubmit={onSubmit} >
             {/* First name */}
@@ -123,6 +130,7 @@ function RegisterInputForm({ firstName, setFirstName, lastName, setLastName, ema
                     required
                 />
             </Field>
+
             {/* Confirm Password */}
             <Field className='my-3'>
                 <FieldLabel htmlFor='input_confirm_password'>Confirm Password</FieldLabel>
@@ -139,6 +147,10 @@ function RegisterInputForm({ firstName, setFirstName, lastName, setLastName, ema
 
             {/* Button */}
             <Button type='submit' variant='default' className='w-full my-3'>Register</Button>
+
+            <hr />
+
+            <Button type="button" variant='secondary' className='w-full mt-3' onClick={onBackToLogin}>Back</Button>
         </form>
     );
 }

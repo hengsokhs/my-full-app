@@ -1,14 +1,22 @@
 "use client";
 
-import { Card, CardTitle, CardContent } from '@/components/ui/card';
-import { Field, FieldLabel } from '@/components/ui/field';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { CustomCardCenter } from '@/components/custom/CustomCardCenter';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
+import { CustomFieldInput } from '@/components/custom/CustomFieldInput';
+import { redirect } from 'next/navigation';
 
 export default function ForgetPasswordPage() {
     const [email, setEmail] = useState("");
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        redirect("/login");
+    }
+
+    const handleBackToLogin = () => {
+        redirect("/login");
+    }
 
     return (
         <CustomCardCenter
@@ -16,6 +24,9 @@ export default function ForgetPasswordPage() {
             content={
                 <ForgetPasswordInputForm
                     email={email}
+                    setEmail={setEmail}
+                    onSubmit={handleSubmit}
+                    onBack={handleBackToLogin}
                 />
             }
         />
@@ -24,12 +35,26 @@ export default function ForgetPasswordPage() {
 
 interface ForgetPasswordFormProps {
     email: string;
-
+    setEmail: (val: string) => void;
+    onSubmit: (e: FormEvent) => void;
+    onBack: () => void;
 }
 
-function ForgetPasswordInputForm({email}: ForgetPasswordFormProps) {
+function ForgetPasswordInputForm({ email, setEmail, onSubmit, onBack}: ForgetPasswordFormProps) {
     return(
-        <h1>sdf</h1>
+        <form onSubmit={onSubmit}>
+            <CustomFieldInput
+                label='Email'
+                name='inputEmail'
+                id='input_email'
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required={true}
+            />
+            <Button type='submit' variant={'default'} className='w-full mb-3'>Submit</Button>
+            <hr />
+            <Button type='button' variant={'outline'} className='w-full mt-3' onClick={onBack}>Back</Button>
+        </form>
     );
 }
 
