@@ -12,7 +12,7 @@ import { Field, FieldLabel } from "@/components/ui/field";
 import { Mail, Smartphone, KeyRound } from "lucide-react";
 import { FormEvent, useState, useEffect } from "react";
 import { Roboto } from "next/font/google";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 // Roboto Font
 const roboto = Roboto({
@@ -20,7 +20,7 @@ const roboto = Roboto({
 })
 
 export default function LoginPage() {
-
+  const router = useRouter();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [users, setUsers] = useState([]);
@@ -33,9 +33,19 @@ export default function LoginPage() {
   //   .then((data) => setUsers(data))
   // }, []);
 
-  const handleLogin = (e: FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     console.log("Submitting: ", { username, password });
+    router.push('/?username=noname');
+
+    const res = await fetch("/api/auth", {
+      method: "POST",
+      body: JSON.stringify({ username }),
+    });
+
+    if (res.ok) {
+      router.push("/");
+    }
   }
 
   const onClickRegister = () => {

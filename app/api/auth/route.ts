@@ -1,16 +1,14 @@
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
-    const data = await request.json();
+export async function POST(req: Request) {
+    const { username } = await req.json();
 
-    console.log("Data received: ", data);
+    const res = NextResponse.json({ success: true });
 
-    return NextResponse.json({message: "Data saved successfully!"}, {status: 200});
-}
+    res.cookies.set("username", username, {
+        httpOnly: true,
+        path: "/",
+    });
 
-export async function GET() {
-    return Response.json([
-        { id: 1, name: 'John' },
-        { id: 2, name: 'Sara' }
-    ])
+    return res;
 }
