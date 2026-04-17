@@ -36,7 +36,6 @@ export default function LoginPage() {
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     console.log("Submitting: ", { username, password });
-    router.push('/?username=noname');
 
     const res = await fetch("/api/auth", {
       method: "POST",
